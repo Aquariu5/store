@@ -1,0 +1,5 @@
+export const HOME_PATH = '/'
+export const AUTH_PATH = '/auth'
+export const ADMIN_PATH = '/admin'
+export const BASKET_PATH = '/basket'
+export const DEVICE_PATH = '/devices/:id'
