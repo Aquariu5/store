@@ -1,11 +1,19 @@
 import { useState } from "react";
 import { Container, Row, Col, Navbar, Nav, Button, NavLink, Form, FormControl} from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { AUTH_PATH, BASKET_PATH } from "./router/paths";
-const NavbarOwn = () => {
+import user from "../models/user";
+import { observer } from "mobx-react-lite";
+const NavbarOwn = observer(() => {
 
     const [state,setState] = useState('');
-    const history = useHistory();
+    const history = useNavigate();
+    
+    const logOut = () => {
+        user.setAuthFalse();
+        localStorage.removeItem('token');
+        history(AUTH_PATH);
+    }
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
@@ -20,8 +28,14 @@ const NavbarOwn = () => {
                     <Button variant="outline-success">Search</Button>
                 </Form>
                 <Nav className="ml-auto">
-                    <Button onClick={() => history.push(AUTH_PATH)}>Войти</Button>
-                    <Button onClick={() => history.push(BASKET_PATH)}>Корзина</Button>
+                    {
+                        user.auth ?
+                        <Button onClick={logOut}>Выйти</Button>
+                        :
+                        <Button onClick={() => history(AUTH_PATH)}>Войти</Button>
+                    }
+                    
+                    <Button onClick={() => history(BASKET_PATH)}>Корзина</Button>
 
                     {/* <Link to={AUTH_PATH}>Войти</Link>
                     <Link to={BASKET_PATH}>Корзина</Link> */}
@@ -31,6 +45,6 @@ const NavbarOwn = () => {
             
     )
 
-}
+});
 
 export default NavbarOwn

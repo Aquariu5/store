@@ -11,6 +11,11 @@ import Devices from './components/Devices';
 import Shop from './components/Shop';
 import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './components/router/AppRouter';
+import user from './models/user';
+
+if (localStorage.getItem('token')) {
+  user.setAuthTrue();
+}
 function App() {
   return (
         <BrowserRouter>

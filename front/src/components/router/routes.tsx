@@ -10,16 +10,15 @@ interface IRouter {
     path: string,
     component: ReactNode | React.Component
 }
-export const publicRouter = [
-    {path: HOME_PATH, component: Shop},
-    {path: AUTH_PATH, component: Auth},
-    {path: DEVICE_PATH, component: DevicePage}
-]
+export const notAuthRouter = [
+    {path: HOME_PATH, element: <Shop/> },
+    {path: AUTH_PATH, element: <Auth/>},
+    {path: DEVICE_PATH, element: <DevicePage/>}
+];
 
 export const adminRouter = [
-    {path: HOME_PATH, component: Shop},
-    {path: ADMIN_PATH, component: Admin},
-    {path: AUTH_PATH, component: Auth},
-    {path: BASKET_PATH, component: Basket},
-    {path: DEVICE_PATH, component: DevicePage}
+        {path: HOME_PATH, element: <Shop/>},
+        {path: ADMIN_PATH, element: <Admin/>},
+        {path: BASKET_PATH, element: <Basket/>},
+        {path: DEVICE_PATH, element: <DevicePage/>}
 ]

@@ -10,6 +10,7 @@ const generateJWT = async (id, email, role) => {
         { expiresIn: '10m'}
     )
 }
+
 class userController {
     async registration(req, res, next) {
         let {email, password, role} = req.body;
@@ -21,15 +22,16 @@ class userController {
         if (candidate) {
             return next(ApiError.badRequest('Пользователь с  таким email уже существует'))
         }
-
-        const hashPass = await bcrypt.hash(user.password, 5); // захешированный пароль
-    
+        
+        const hashPass = await bcrypt.hash(password, 5); // захешированный пароль
+        
 
         const userobj = await user.create({email, password: hashPass, role}); // кладем захешенный пароль в БД
         const basketobj = await basket.create({userId: userobj.id}); // создаем корзину с id новосозданного пользователя
     
-        const token = generateJWT(userobj.id, email, role);
-        return res.json({token: jwt});
+        const token = await generateJWT(userobj.id, email, role);
+        console.log('token', token);
+        return res.json({token});
     }   
 
     async login(req, res, next) {

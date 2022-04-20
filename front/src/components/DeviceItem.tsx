@@ -7,10 +7,16 @@ interface DeviceItemProps {
 const DeviceItem = ({device}: DeviceItemProps) => {
 
     const [state,setState] = useState('');
+    const img = `http://localhost:7000/${device.img}`;
+
+    
+
     return (
-            <Card className="mt-4">
+            <Card className="mt-4"
+                
+            >
                 <div>
-                    <Image width={150} height={150} src="http://localhost:7000/24a13ad6-524c-4fa0-becc-f69fcbb621ad.jpg"/>
+                    <Image width={150} height={150} src={img}/>
                 </div>
                 <div className="me-auto p-2">
                     {device.name}
