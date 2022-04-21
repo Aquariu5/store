@@ -1,13 +1,35 @@
 import { CacheProvider } from "@emotion/react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Brands from './Brands';
 import Devices from './Devices';
 import Suggestions from "./Suggestions";
 import Types from "./Types";
-const Shop = () => {
+import { observer } from "mobx-react-lite";
+
+import { getDevices } from "../api/apiDevices";
+
+import device from "../models/devices";
+const Shop = observer(() => {
 
     const [state,setState] = useState('');
+
+    // обычный запрос для всех устройств
+    useEffect(() => {
+        getDevices()
+        .then(res => {device.setDevices(res.rows); console.log('devices', res.rows);});
+    }
+    , []);
+
+    // запрос для устойств по фильтру
+    useEffect(() => {
+        getDevices(device.brand, device.type)
+        .then(res => {device.setDevices(res.rows); console.log(res.rows);});
+    }
+    , [device.brand, device.type]);
+
+
+
     return <Container>
             <Row>
                 <Types/>
@@ -24,6 +46,6 @@ const Shop = () => {
                 </Col>
             </Row>
     </Container>
-}
+})
 
 export default Shop;

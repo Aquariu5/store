@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Col, Image, Card } from "react-bootstrap";
-import {IDevice} from './Devices'
+import {IDevice} from '../models/devices';
+
 interface DeviceItemProps {
     device: IDevice
 }
+
 const DeviceItem = ({device}: DeviceItemProps) => {
 
-    const [state,setState] = useState('');
     const img = `http://localhost:7000/${device.img}`;
 
     

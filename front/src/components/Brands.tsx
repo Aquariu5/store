@@ -1,8 +1,9 @@
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Container, Col, Row, Card } from "react-bootstrap";
 import { getBrands } from "../api/apiDevices";
-import devices from '../models/devices';
+
+import device from '../models/devices';
 
 interface IType {
     id: number,
@@ -19,7 +20,7 @@ const Brands = observer(() => {
             setTypes(res);
         }   
         get();
-    }, [types.length]);
+    }, []);
 
 
     // const types = [
@@ -30,8 +31,8 @@ const Brands = observer(() => {
     // ]
 
     const selectBrand = (id: number) => {
-        devices.setBrand(id);
-        console.log('brand', devices.brand);
+        device.setBrand(id);
+        
         setBorder(id)
     }
 

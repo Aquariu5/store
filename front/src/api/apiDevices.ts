@@ -12,7 +12,7 @@ export const getTypes = async () => {
     return res;
 }
 
-export const getDevices = async (/*brand?: string, type?: string*/brandId?: number, typeId?: number) => {
+export const getDevices = async (/*brand?: string, type?: string*/brandId?: number | null, typeId?: number | null) => {
     if (brandId) {
         const brands = await getBrands();
         console.log('brands', brands);
