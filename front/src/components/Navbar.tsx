@@ -1,23 +1,32 @@
-import { useState } from "react";
-import { Container, Row, Col, Navbar, Nav, Button, NavLink, Form, FormControl} from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Container, Row, Col, Navbar, Nav, Button, NavLink, Form, FormControl, Badge} from "react-bootstrap";
 import { Link, useNavigate} from "react-router-dom";
-import { AUTH_PATH, BASKET_PATH } from "./router/paths";
+import { AUTH_PATH, BASKET_PATH, HOME_PATH } from "./router/paths";
 import user from "../models/user";
+import basket from "../models/basket";
 import { observer } from "mobx-react-lite";
+import clear from "./init/clearApp";
+import init from "./init/initApp";
 const NavbarOwn = observer(() => {
 
     const [state,setState] = useState('');
     const history = useNavigate();
-    
+    console.log('basketDevicesnav', basket.devices.length);
     const logOut = () => {
         user.setAuthFalse();
-        localStorage.removeItem('token');
+        clear();
         history(AUTH_PATH);
+    }
+
+    const logIn = () => {
+        history(AUTH_PATH);
+        // user.setAuthTrue();
+        // init();
     }
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand href="/">AydarShop</Navbar.Brand>
+                <Navbar.Brand style={{cursor: 'pointer'}} onClick={() => history(HOME_PATH)}>AydarShop</Navbar.Brand>
                 <Form className="d-flex">
                     <FormControl
                     type="search"
@@ -32,10 +41,10 @@ const NavbarOwn = observer(() => {
                         user.auth ?
                         <Button onClick={logOut}>Выйти</Button>
                         :
-                        <Button onClick={() => history(AUTH_PATH)}>Войти</Button>
+                        <Button onClick={logIn}>Войти</Button>
                     }
                     
-                    <Button onClick={() => history(BASKET_PATH)}>Корзина</Button>
+                    <Button onClick={() => history(BASKET_PATH)}>Корзина <Badge bg="secondary">{basket.devices.length}</Badge></Button>
 
                     {/* <Link to={AUTH_PATH}>Войти</Link>
                     <Link to={BASKET_PATH}>Корзина</Link> */}

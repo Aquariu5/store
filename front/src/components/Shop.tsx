@@ -17,14 +17,14 @@ const Shop = observer(() => {
     // обычный запрос для всех устройств
     useEffect(() => {
         getDevices()
-        .then(res => {device.setDevices(res.rows); console.log('devices', res.rows);});
+        .then(res => {device.setDevices(res.rows)});
     }
     , []);
 
     // запрос для устойств по фильтру
     useEffect(() => {
         getDevices(device.brand, device.type)
-        .then(res => {device.setDevices(res.rows); console.log(res.rows);});
+        .then(res => {device.setDevices(res.rows)});
     }
     , [device.brand, device.type]);
 

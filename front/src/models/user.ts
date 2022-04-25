@@ -1,22 +1,19 @@
 import { makeAutoObservable } from "mobx";
-interface IUser {
-    email: string
-    password: string
-    role: string
-    auth: boolean
-}
+import {IUser} from '../interfaces/user'
 
 class User implements IUser {
     email: string;
     password: string;
     role: string;
     auth: boolean;
+    id: number
     constructor() {
         makeAutoObservable(this);
         this.email = '';
         this.password = '';
         this.role = '';
         this.auth = false;
+        this.id = -1;
     }
 
     setAuthTrue() {
@@ -25,6 +22,10 @@ class User implements IUser {
 
     setAuthFalse() {
         this.auth = false;
+    }
+
+    setId(val: number) {
+        this.id = val;
     }
 
     changeAuth() {
@@ -40,6 +41,14 @@ class User implements IUser {
 
     setRole(val: string) {
         this.role = val;
+    }
+
+    clearFields() {
+        this.email = '';
+        this.password = '';
+        this.role = '';
+        this.auth = false;
+        this.id = -1;
     }
 }
 

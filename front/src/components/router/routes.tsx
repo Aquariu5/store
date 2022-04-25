@@ -1,9 +1,9 @@
-import Admin from "../Admin";
+import Admin from "../pages/Admin";
 import Shop from "../Shop";
-import Auth from "../Auth";
+import Auth from "../pages/Auth";
 import { HOME_PATH, ADMIN_PATH, AUTH_PATH, BASKET_PATH, DEVICE_PATH } from "./paths";
-import Basket from "../Basket";
-import DevicePage from "../DevicePage";
+import Basket from "../pages/Basket";
+import DevicePage from "../pages/DevicePage";
 import React, { ReactNode, RefCallback } from "react";
 
 interface IRouter {

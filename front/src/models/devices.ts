@@ -1,27 +1,21 @@
 import { makeAutoObservable } from "mobx";
+import {IDevices, IDevice, IType} from '../interfaces/device';
 
-export interface IDevice {
-    id: number,
-    name: string,
-    price: number,
-    img: string
-}
-
-export interface IDevices {
-    type: number | null 
-    brand: number | null
-    devices: IDevice[]
-}
 
 
 class Devices implements IDevices {
     type: number | null;
     brand: number | null;
     devices: IDevice[];
+    types: IType[];
+    brands: IType[];
+
     constructor() {
         this.type = null;
         this.brand = null;
         this.devices = [];
+        this.types = [];
+        this.brands = [];
         makeAutoObservable(this);
     }
 
@@ -35,6 +29,14 @@ class Devices implements IDevices {
 
     setDevices(vals: IDevice[]) {
         this.devices = vals;
+    }
+
+    setBrands(val: IType[]) {
+        this.brands = val;
+    }
+
+    setTypes(val: IType[]) {
+        this.types =  val;
     }
 }
 

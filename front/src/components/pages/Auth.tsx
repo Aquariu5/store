@@ -1,23 +1,35 @@
 import { useState } from "react";
 import { Container, Card, Row, Col, Form, FormControl, Button } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import { registration, auth } from "../api/apiUser";
-import useInput from "../hooks/useInput";
-import user from "../models/user";
+import { registration, auth, getUserId } from "../../api/apiUser";
+import useInput from "../../hooks/useInput";
+import user from "../../models/user";
 import { observer } from "mobx-react-lite";
-import { HOME_PATH } from "./router/paths";
+import { HOME_PATH } from "../router/paths";
+import init from "../init/initApp";
+
 const Auth = observer(() => {
 
     const [state,setState] = useState('');
     const email = useInput('');
     const password = useInput('');
     const history = useNavigate();
+    const [header, setHeader] = useState<string[]>(['Регистрация', 'Уже зарегистрированы?']);
+    
     const signIn = async () => {
         try {
-            const res = await registration(email.value, password.value);
+            let res;
+            if (header[0] == 'Регистрация') 
+                res = await registration(email.value, password.value);
+            else
+                res = await auth(email.value, password.value);
+
             console.log('res', res.data.token);
             user.changeAuth();
             localStorage.setItem('token', res.data.token);
+            init();
+            const id = await getUserId(email.value);
+            user.setId(id);
             history(HOME_PATH);
         }
         catch(e: any) {
@@ -27,12 +39,23 @@ const Auth = observer(() => {
             console.log('e', e);
         }
     }
+
+    const changeHeader = () => {
+        if (header[0] == 'Регистрация') {
+            setHeader(['Авторизация', 'Нет логина? Зарегистрироваться'])
+        }
+        else {
+            setHeader(['Регистрация', 'Уже зарегистрированы?']);
+        }
+    }
+
+
     return (
         <Container className="d-flex justify-content-center align-items-center"  style={{
             height: window.innerHeight - 100
             }}>
                 <Card style={{width: 600}} className={'p-5'}>
-                    <h3 className={'m-auto p-4'}>Регистрация </h3>
+                    <h3 className={'m-auto p-4'}>{header[0]} </h3>
                     <Form className="d-flex flex-column">
                         <FormControl
                             placeholder="Логин..."
@@ -45,7 +68,7 @@ const Auth = observer(() => {
                             {...password}
                         />
                         <div className="d-flex justify-content-between mt-3">
-                                <NavLink className="ml-4" to='/auth'>Уже зарегистрированы?</NavLink>
+                                <NavLink onClick={changeHeader} className="ml-4" to='/auth'>{header[1]}</NavLink>
                                 <Button onClick={signIn} className="mb-3 me-2">Войти</Button>
                         </div>
                     </Form>

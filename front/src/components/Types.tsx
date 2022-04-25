@@ -11,27 +11,28 @@ interface IType {
 
 
 const Types = observer(() => {
-    const [types, setTypes] = useState<IType[]>([]);
     const [selected, setSelected] = useState<number>(0);
+
     const selectType = (id: number) => {
         setSelected(id)
         device.setType(id);
     }
+
     console.log('type', device.type);
     useEffect(() => {
         const get = async () => {
             const res = await getTypes();
             console.log('types', res);
-            setTypes(res);
+            device.setTypes(res);
         }
         get();
     }, [])
     return (
                 <Col md={6} className="d-flex">
                 {
-                types.length == 0 ? <div>Ждите...</div>
+                device.types.length == 0 ? <div>Ждите...</div>
                 :
-                types.map(el => <Card 
+                device.types.map(el => <Card 
                     className="p-2"
                     key={el.id}
                     style={{width: '150px', cursor: 'pointer', border: el.id === selected ? '2px solid black' : ''}}

@@ -25,11 +25,19 @@ const registration = async (email: string, password: string) => {
 const auth = async (email: string, password: string) => {
     console.log('email, pass', email, password);
     const response = await host.post('/api/user/login', {email, password});
-    console.log('response', response);
+    console.log('responseauth', response);
     return response;
 }
+
+const getUserId = async (email: string) => {
+    const res = await host.post('/api/user/getid', {email});
+    console.log('response', res);
+    return res.data.id;
+}
+
 export {
     host,
     registration,
-    auth
+    auth,
+    getUserId
 }

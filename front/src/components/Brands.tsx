@@ -5,19 +5,15 @@ import { getBrands } from "../api/apiDevices";
 
 import device from '../models/devices';
 
-interface IType {
-    id: number,
-    name: string
-}
+
 
 const Brands = observer(() => {
     
-    const [types, setTypes] = useState<IType[]>([]);
     const [border, setBorder] = useState(0);
     useEffect(() => {
         const get = async() => {
             const res = await getBrands();
-            setTypes(res);
+            device.setBrands(res);
         }   
         get();
     }, []);
@@ -42,7 +38,7 @@ const Brands = observer(() => {
                 <h3 className="d-flex">Популярные бренды</h3>
                 <Col md={10}>
                     {
-                types.map(el => <Card
+                device.brands.map(el => <Card
                     key={el.id}
                     className="p-2 " 
                     style={{cursor: 'pointer', border: el.id === border ?  '2px solid black' : ''}}

@@ -42,14 +42,14 @@ class userController {
         }
         const inputHash = await bcrypt.hash(password, 5);
         //if (userobj.password != inputHash) {
-        if (bcrypt.compareSync(password, userobj.password)) {
+        if (!bcrypt.compareSync(password, userobj.password)) {
             //console.log('inputpass, base', inputHash, userobj.password);
             return next(ApiError.forbidden('Неверный пароль'));
         }
         const token = await generateJWT(userobj.id, email, userobj.role);
         return res.json({token});
     }
-
+    
     async check(req, res, next) {
         const token = await generateJWT(req.user.id, req.user.email, req.user.role);
         return res.status(200).json({token});

@@ -2,6 +2,7 @@ import * as uuid from 'uuid';
 import path from 'path';
 import { device } from '../models/models.js';
 import ApiError from '../error/ApiError.js';
+import { brand } from '../models/models.js';
 class DeviceController {
     
     async addDevice(req, res, next) {
@@ -35,17 +36,25 @@ class DeviceController {
             console.log('brand, type', brandId, typeId);
             //ничо не задано
             if (!brandId && !typeId) {
-                deviceobj = await device.findAndCountAll({limit, offset});
+                deviceobj = await device.findAndCountAll({limit, offset, include: [{
+                    model: brand
+                }]});
             }
             // задан typeId
             else if (!brandId && typeId) {
-                deviceobj = await device.findAndCountAll({where: {typeId}});
+                deviceobj = await device.findAndCountAll({where: {typeId}, include: [{
+                    model: brand
+                }]});
             }
             else if (brandId && !typeId) {
-                deviceobj = await device.findAndCountAll({where: {brandId}});
+                deviceobj = await device.findAndCountAll({where: {brandId}, include: [{
+                    model: brand
+                }]});
             }
             else if (brandId && typeId) {
-                deviceobj = await device.findAndCountAll({where: {brandId, typeId}});
+                deviceobj = await device.findAndCountAll({where: {brandId, typeId}, include: [{
+                    model: brand
+                }]});
             }
             else {
                 next(ApiError.badRequest(e.message));
@@ -65,7 +74,9 @@ class DeviceController {
             next(ApiError.badRequest('ID не указан для девайса'));
             return;
         }
-        const deviceobj = await device.findAll({where: {id}});
+        const deviceobj = await device.findOne({where: {id}, include: [{
+            model: brand
+        }]});
         return res.json(deviceobj);
     }
 }

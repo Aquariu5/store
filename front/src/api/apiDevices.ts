@@ -24,3 +24,9 @@ export const getDevices = async (/*brand?: string, type?: string*/brandId?: numb
     const res = (await axios.get(`${process.env.REACT_APP_BACK_SITE}/api/device`, {params: {brandId, typeId}})).data;
     return res;
 }
+
+export const getDeviceById = async(id: number) => {
+    console.log('path', `${process.env.REACT_APP_BACK_SITE}/api/device/${id}`);
+    const res = (await axios.get(`${process.env.REACT_APP_BACK_SITE}/api/device/${id}`)).data;
+    return res;
+}
