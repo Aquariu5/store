@@ -4,18 +4,21 @@ import { useParams } from "react-router-dom";
 import { getDeviceById } from "../../api/apiDevices";
 import {addInBasket} from '../../api/apiBasket';
 import { IDevice } from "../../interfaces/device";
+import { observer } from "mobx-react-lite";
 // import getBrandName from "../../utils/getBrandName";
 import user from "../../models/user";
 import basket from "../../models/basket";
-const DevicePage = () => {
+
+const DevicePage = observer(() => {
     const {id} = useParams();
     const [url, setUrl] = useState<string>('');
     const [device, setDevice] = useState<IDevice>();
-    console.log('devicepage', device);
+    //console.log('devicepage', device);
     useEffect(() => {
         if (id) {
             getDeviceById(+id)
             .then(res => {
+                //console.log('devicewillbeadded', res);
                 setDevice(res);
                 setUrl(`${process.env.REACT_APP_BACK_SITE}/${res.img}`)
             })
@@ -23,20 +26,28 @@ const DevicePage = () => {
     }, []);
     
     const add = useCallback(() => {
+        //console.log('id, device', id, device);
         if (id && device) {
+            //console.log('condition true');
             addInBasket(user.id, +id)
             .then(res => {
-                const obj = {
-                    basketId: user.id,
-                    deviceId: +id,
-                    amount: 1,
-                    device
+                //console.log('resssssss', res);
+                if (res.length == 1 && res[0] == 1) { // update
+                    basket.updateAmount(+id, user.id);
                 }
-                basket.addDeviceId(obj);
+                else {
+                    const obj = {
+                        basketId: user.id,
+                        deviceId: +id,
+                        amount: 1,
+                        device
+                    }
+                    basket.addDeviceId(obj);
+                }
             })
         }
         
-    }, []);
+    }, [id, device]);
     return <Container>
         <Row className="mt-5">
             <Col md={4}>
@@ -69,6 +80,6 @@ const DevicePage = () => {
             </Col>
         </Row>
     </Container>
-}
+})
 
 export default DevicePage;

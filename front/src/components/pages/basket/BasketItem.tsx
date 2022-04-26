@@ -1,29 +1,34 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Col, Image, Card, Row, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { DEVICE_PATH_WO_ID } from "../../router/paths";
-import devices from "../../../models/devices";
+import { removeFromBasket } from "../../../api/apiBasket";
+import basketModel from "../../../models/basket";
 // import getBrand from '../utils/getBrandName';
 import {IDevice} from '../../../interfaces/device';
 import { IBasketDevice } from "../../../interfaces/basket";
-
+import { observer } from "mobx-react-lite";
 interface DeviceItemProps {
     basket: IBasketDevice
 }
 
-const BasketItem = ({basket}: DeviceItemProps) => {
+const BasketItem = observer(({basket}: DeviceItemProps) => {
 
     const history = useNavigate();
     
     const img = `${process.env.REACT_APP_BACK_SITE}/${basket.device.img}`;
-    const [brand, setBrand] = useState("Brand");
-    const openDevice = (id: number) => {
-        history(`${DEVICE_PATH_WO_ID}${basket.device.id}`)
-    }
+
     // useEffect(() => {
     //     getBrand(device.brandId)
     //     .then(res => setBrand(res));
     // })
+
+    const removeItem = async () => {
+        let res = await removeFromBasket(basket.basketId, basket.deviceId);
+        if (res) {
+            basketModel.deleteDevice(basket.basketId, basket.deviceId);
+        }
+    }
     return (
         <Card className="p-2">
             <Row>
@@ -38,8 +43,12 @@ const BasketItem = ({basket}: DeviceItemProps) => {
                         <h3 className="me-auto p-2">{basket.device.price} ₽</h3>
 
                 </Col>
-                <Col md={4} className="m-auto">
+                <Col md={6} className="m-auto">
+                    <div className="d-flex gap-1">
                     <Button variant={'outline-danger'}>Оформить заказ</Button>
+                    <Button variant={'outline-secondary'} onClick={removeItem}>Удалить</Button>
+
+                    </div>
                     <div className="mt-4">
                     Количество: {basket.amount} <Button>+</Button> <Button>-</Button>
                     </div>
@@ -47,6 +56,6 @@ const BasketItem = ({basket}: DeviceItemProps) => {
             </Row>
             </Card>
         )
-}
+});
 
 export default BasketItem

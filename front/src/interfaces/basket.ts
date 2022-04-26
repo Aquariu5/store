@@ -10,5 +10,4 @@ export interface IBasketDevice {
 export interface IBasket {
     basktetId: number
     devices: IBasketDevice[]
-    amount: number
 }

@@ -13,9 +13,43 @@ import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './components/router/AppRouter';
 import init from './components/init/initApp';
 
+import user from './models/user';
+import basket from './models/basket';
+import jwt_decode from 'jwt-decode';
+import { getBasketById } from './api/apiBasket';
+// async function init() {
+//   if (localStorage.getItem('token')) {
+//       user.setAuthTrue();
+//       const token = localStorage.getItem('token')
+//       const data: any = jwt_decode(token || '');
+//       user.id = data.id;
+//       user.email = data.email;
+//       user.role = data.role;
+//       const basketById = await getBasketById(user.id);
+//       basket.setDevices(basketById.rows);
+//       console.log('basketleninit', basket.devices.length);
+//   }
+// }
 
 function App() {
-  init();
+
+  //
+  //init();
+  if (localStorage.getItem('token')) {
+    user.setAuthTrue();
+    const token = localStorage.getItem('token')
+    const data: any = jwt_decode(token || '');
+    user.id = data.id;
+    user.email = data.email;
+    user.role = data.role;
+    //const basketById = await getBasketById(user.id);
+    //basket.setDevices(basketById.rows);
+    getBasketById(user.id)
+    .then(res => basket.setDevices(res.rows));
+    console.log('basketleninit', basket.devices.length);
+  }
+  //
+
   return (
         <BrowserRouter>
             <Navbar/>

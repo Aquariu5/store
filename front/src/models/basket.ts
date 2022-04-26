@@ -4,18 +4,30 @@ import { IDevice } from "../interfaces/device";
 import user from "./user";
 import { IBasketDevice } from "../interfaces/basket";
 
+
 class Basket implements IBasket {
     basktetId: number;
     //deviceIds: number[];
     devices: IBasketDevice[]
-    amount: number;
+
     constructor() {
-        this.amount = 1;
         this.basktetId = user.id;
         this.devices = []
+        makeAutoObservable(this);
+    }
 
+    updateAmount(deviceId: number, basketId: number) {
+        this.devices.forEach(device => {
+            if (device.basketId == basketId && device.deviceId == deviceId) {
+                device.amount +=1;
+            }
+        });
     }
     
+    deleteDevice(basketId: number, deviceId: number) {
+        this.devices = this.devices.filter(dev => !(dev.deviceId == deviceId && dev.basketId == basketId));
+    }
+
     setDevices(val: IBasketDevice[]) {
         this.devices = val;
     }
@@ -25,7 +37,6 @@ class Basket implements IBasket {
     }
 
     clearFields() {
-        this.amount = -1;
         this.basktetId = -1;
         this.devices = []
     }

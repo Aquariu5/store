@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Container, Card, Row, Col, Form, FormControl, Button } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { registration, auth, getUserId } from "../../api/apiUser";
@@ -6,7 +6,14 @@ import useInput from "../../hooks/useInput";
 import user from "../../models/user";
 import { observer } from "mobx-react-lite";
 import { HOME_PATH } from "../router/paths";
+
 import init from "../init/initApp";
+
+
+import basket from '../../models/basket';
+import jwt_decode from 'jwt-decode';
+import { getBasketById } from '../../api/apiBasket';
+
 
 const Auth = observer(() => {
 
@@ -16,7 +23,7 @@ const Auth = observer(() => {
     const history = useNavigate();
     const [header, setHeader] = useState<string[]>(['Регистрация', 'Уже зарегистрированы?']);
     
-    const signIn = async () => {
+    const signIn = useCallback(async () => {
         try {
             let res;
             if (header[0] == 'Регистрация') 
@@ -27,9 +34,22 @@ const Auth = observer(() => {
             console.log('res', res.data.token);
             user.changeAuth();
             localStorage.setItem('token', res.data.token);
-            init();
-            const id = await getUserId(email.value);
-            user.setId(id);
+            //
+            //init();
+            if (localStorage.getItem('token')) {
+                user.setAuthTrue();
+                const token = localStorage.getItem('token')
+                const data: any = jwt_decode(token || '');
+                user.id = data.id;
+                user.email = data.email;
+                user.role = data.role;
+                const basketById = await getBasketById(user.id);
+                basket.setDevices(basketById.rows);
+                // getBasketById(user.id)
+                // .then(res => basket.setDevices(res.rows));
+                // console.log('basketleninit', basket.devices.length);
+            }
+            //
             history(HOME_PATH);
         }
         catch(e: any) {
@@ -38,7 +58,7 @@ const Auth = observer(() => {
             
             console.log('e', e);
         }
-    }
+    },[email, password]);
 
     const changeHeader = () => {
         if (header[0] == 'Регистрация') {
