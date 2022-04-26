@@ -34,22 +34,7 @@ const Auth = observer(() => {
             console.log('res', res.data.token);
             user.changeAuth();
             localStorage.setItem('token', res.data.token);
-            //
-            //init();
-            if (localStorage.getItem('token')) {
-                user.setAuthTrue();
-                const token = localStorage.getItem('token')
-                const data: any = jwt_decode(token || '');
-                user.id = data.id;
-                user.email = data.email;
-                user.role = data.role;
-                const basketById = await getBasketById(user.id);
-                basket.setDevices(basketById.rows);
-                // getBasketById(user.id)
-                // .then(res => basket.setDevices(res.rows));
-                // console.log('basketleninit', basket.devices.length);
-            }
-            //
+            init();
             history(HOME_PATH);
         }
         catch(e: any) {
