@@ -1,8 +1,7 @@
 import * as uuid from 'uuid';
 import path from 'path';
-import { device } from '../models/models.js';
+import { device, brand, deviceChars } from '../models/models.js';
 import ApiError from '../error/ApiError.js';
-import { brand } from '../models/models.js';
 class DeviceController {
     
     async addDevice(req, res, next) {
@@ -11,13 +10,14 @@ class DeviceController {
             //console.log('dirname', __dirname);
             console.log('body', req.body);
             console.log('img', req.files);
-            const {price, name, brandId, typeId} = req.body;
+            const {price, name, brandId, typeId, chars} = req.body;
             const {img} = req.files;
             
             let filename = uuid.v4() + '.jpg';
             img.mv(path.resolve(__dirname, 'static', filename));
     
             const deviceobj = await device.create({name, price, brandId, typeId, img: filename});
+            const charsobj = await deviceChars.create({description: chars, deviceId: deviceobj.id});
             return res.json(deviceobj);
         } catch(e) {
             next(ApiError.badRequest(e.message));
@@ -76,7 +76,10 @@ class DeviceController {
         }
         const deviceobj = await device.findOne({where: {id}, include: [{
             model: brand
-        }]});
+        }, {
+            model: deviceChars
+        }
+    ]});
         return res.json(deviceobj);
     }
 }

@@ -5,16 +5,17 @@ const host = axios.create({
     baseURL: process.env.REACT_APP_BACK_SITE
 });
 
-const authHost = axios.create({
-    baseURL: process.env.REACT_APP_BACK_SITE
-});
+// const authHost = axios.create({
+//     baseURL: process.env.REACT_APP_BACK_SITE
+// });
 
 
 const authInterceptor = (config: any) => {
     config.headers.authorization = `Bearer ${localStorage.getItem('token')}`;
+    return config;
 }
 
-authHost.interceptors.request.use(authInterceptor);
+host.interceptors.request.use(authInterceptor);
 
 const registration = async (email: string, password: string) => {
 

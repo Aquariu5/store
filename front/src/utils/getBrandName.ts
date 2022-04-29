@@ -1,8 +1,8 @@
-import { getBrands } from "../api/apiDevices";
+import { getBrands } from "../api/apiBrands";
 import devices from "../models/devices";
 export default async function getBrandName(id: number) {
 
-    if (devices.brands.length == 0) {
+    if (devices.brands.length === 0) {
         let brands = await getBrands();
         devices.setBrands(brands);
     }
@@ -11,10 +11,10 @@ export default async function getBrandName(id: number) {
     try {
         devices.brands.forEach(brand => {
             //console.log('brandId, inputId', brand.id, id);
-            if (brand.id == id) {
+            if (brand.id === id) {
                 brandStr = brand.name;
                 throw BreakException;
-            }
+      }
         })
     } catch(e: any) {
         if (e !== BreakException) {

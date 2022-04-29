@@ -1,50 +1,58 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
-import { Button, Container, Col, Row, Card } from "react-bootstrap";
-import { getBrands } from "../api/apiDevices";
+import { Button, Container, Col, Row, Card, Spinner } from "react-bootstrap";
+import { getBrands } from "../api/apiBrands";
+import useBrands from "../hooks/useBrands";
+
+//import useSWR from "swr";
 
 import device from '../models/devices';
+
+//import getFetcher from "../api/fetchers/getFetcher";
 
 
 
 const Brands = observer(() => {
     
     const [border, setBorder] = useState(0);
-    useEffect(() => {
-        const get = async() => {
-            const res = await getBrands();
-            device.setBrands(res);
-        }   
-        get();
-    }, []);
 
+    
+    const {brands, errorBrands, loadingBrands} = useBrands();
+    // useEffect(() => {
+    //     console.log('databrands', data);
+    // },[data]);
 
-    // const types = [
-    //     {id: 1, name: 'samsung'},
-    //     {id: 2, name: 'apple'},
-    //     {id: 3, name: 'xiaomi'},
-    //     {id: 4, name: 'atlant'},
-    // ]
+    // useEffect(() => {
+    //     const get = async() => {
+    //         const res = await getBrands();
+    //         device.setBrands(res);
+    //     }   
+    //     get();
+    // }, []);
+
 
     const selectBrand = (id: number) => {
         device.setBrand(id);
-        
         setBorder(id)
     }
 
-    const [state,setState] = useState('');
     return (
             <Col className="mt-3" style={{marginLeft: '20px'}}>
                 <h3 className="d-flex">Популярные бренды</h3>
                 <Col md={10}>
                     {
-                device.brands.map(el => <Card
-                    key={el.id}
-                    className="p-2 " 
-                    style={{cursor: 'pointer', border: el.id === border ?  '2px solid black' : ''}}
-                    onClick={() => selectBrand(el.id)}
-                    
-                    >{el.name}</Card>)
+                        loadingBrands
+                        ? 
+                            <Spinner animation="border"/>
+                        : 
+                            brands.map((el:any) => <Card
+                            key={el.id}
+                            className="p-2 " 
+                            style={{cursor: 'pointer', border: el.id === border ?  '2px solid black' : ''}}
+                            onClick={() => selectBrand(el.id)}
+                            
+                            >{el.name}</Card>)
+
                     }
                 </Col>
 

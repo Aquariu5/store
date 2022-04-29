@@ -7,7 +7,7 @@ export default function useTypes() {
     const {data, error} = useSWR(endpoint, getFetcher);
     return {
         types: data,
-        error,
-        loading: !data && !error
+        errorTypes: error,
+        loadingTypes: !data && !error
     }
 }

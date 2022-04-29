@@ -1,4 +1,7 @@
 import jsonwebtoken from "jsonwebtoken";
+
+
+
 export default function(role) {
     return function(req, res, next) {
         if (req.method === 'OPTIONS') {
@@ -10,6 +13,7 @@ export default function(role) {
             if (!token) {
                 return res.status(401).json({message: 'Нет токена в запросе'});
             }
+            console.log('gotten token', token);
             const decoded = jsonwebtoken.verify(token, process.env.SECRET_KEY);
             console.log('decoded', decoded);
             if (decoded.role == role) {
@@ -21,6 +25,7 @@ export default function(role) {
             }
             
         } catch(e) {
+            e.message.includes('jwt') ? e.message = 'Время сеанса истекло. Авторизуйтесь заново' : e.message;
             res.status(401).json({message: e.message});
         }
     }

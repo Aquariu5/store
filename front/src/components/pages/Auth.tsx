@@ -1,35 +1,35 @@
 import { useState, useCallback } from "react";
-import { Container, Card, Row, Col, Form, FormControl, Button } from "react-bootstrap";
+import { Container, Card,Form, FormControl, Button } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import { registration, auth, getUserId } from "../../api/apiUser";
-import useInput from "../../hooks/useInput";
+import { registration, auth } from "../../api/apiUser";
 import user from "../../models/user";
 import { observer } from "mobx-react-lite";
 import { HOME_PATH } from "../router/paths";
-
+import { useForm } from "react-hook-form";
 import init from "../init/initApp";
-
-
-import basket from '../../models/basket';
-import jwt_decode from 'jwt-decode';
-import { getBasketById } from '../../api/apiBasket';
-
+import { IForm } from "../../interfaces/auth";
 
 const Auth = observer(() => {
 
-    const [state,setState] = useState('');
-    const email = useInput('');
-    const password = useInput('');
+    // const email = useInput('');
+    // const password = useInput('');
     const history = useNavigate();
+    const {register, handleSubmit, getValues, formState: {errors}} = useForm({
+        defaultValues: {
+            email: '',
+            password: ''
+        }
+    });
+
     const [header, setHeader] = useState<string[]>(['Регистрация', 'Уже зарегистрированы?']);
     
-    const signIn = useCallback(async () => {
+    const signIn = useCallback(async (data: IForm) => {
         try {
             let res;
-            if (header[0] == 'Регистрация') 
-                res = await registration(email.value, password.value);
+            if (header[0] === 'Регистрация') 
+                res = await registration(data.email, data.password);
             else
-                res = await auth(email.value, password.value);
+                res = await auth(data.email, data.password);
 
             console.log('res', res.data.token);
             user.changeAuth();
@@ -43,17 +43,22 @@ const Auth = observer(() => {
             
             console.log('e', e);
         }
-    },[email, password]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[header, getValues('email'), getValues('password')]);
 
-    const changeHeader = () => {
-        if (header[0] == 'Регистрация') {
+    const changeHeader = useCallback(() => {
+        if (header[0] === 'Регистрация') {
             setHeader(['Авторизация', 'Нет логина? Зарегистрироваться'])
         }
         else {
             setHeader(['Регистрация', 'Уже зарегистрированы?']);
         }
-    }
+    },[header]);
 
+    const onSubmit = useCallback((data: IForm) => {
+        console.log('data', data);
+        signIn(data);
+    },[signIn]);
 
     return (
         <Container className="d-flex justify-content-center align-items-center"  style={{
@@ -61,20 +66,22 @@ const Auth = observer(() => {
             }}>
                 <Card style={{width: 600}} className={'p-5'}>
                     <h3 className={'m-auto p-4'}>{header[0]} </h3>
-                    <Form className="d-flex flex-column">
+                    <Form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column">
                         <FormControl
                             placeholder="Логин..."
                             type="email"
-                            {...email}
+                            {...register("email", {required: true, minLength: 3})}
                         />
+                        {errors.email && <span>Заполните поле...</span>}
                         <FormControl
                             placeholder="Пароль..."
                             type="password"
-                            {...password}
+                            {...register("password", {required: true, minLength: 3})}
                         />
+                        {errors.password && <span>Заполните поле...</span>}
                         <div className="d-flex justify-content-between mt-3">
                                 <NavLink onClick={changeHeader} className="ml-4" to='/auth'>{header[1]}</NavLink>
-                                <Button onClick={signIn} className="mb-3 me-2">Войти</Button>
+                                <Button type="submit" className="mb-3 me-2">Войти</Button>
                         </div>
                     </Form>
                 </Card>

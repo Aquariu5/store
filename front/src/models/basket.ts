@@ -1,6 +1,5 @@
 import { makeAutoObservable } from "mobx";
 import { IBasket } from "../interfaces/basket";
-import { IDevice } from "../interfaces/device";
 import user from "./user";
 import { IBasketDevice } from "../interfaces/basket";
 
@@ -18,14 +17,14 @@ class Basket implements IBasket {
 
     updateAmount(deviceId: number, basketId: number) {
         this.devices.forEach(device => {
-            if (device.basketId == basketId && device.deviceId == deviceId) {
+            if (device.basketId === basketId && device.deviceId === deviceId) {
                 device.amount +=1;
             }
         });
     }
     
     deleteDevice(basketId: number, deviceId: number) {
-        this.devices = this.devices.filter(dev => !(dev.deviceId == deviceId && dev.basketId == basketId));
+        this.devices = this.devices.filter(dev => !(dev.deviceId === deviceId && dev.basketId === basketId));
     }
 
     setDevices(val: IBasketDevice[]) {

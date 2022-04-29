@@ -1,3 +1,5 @@
+import { ICharDevice } from "./chars"
+
 export interface IDevice {
     id: number,
     name: string,
@@ -5,13 +7,23 @@ export interface IDevice {
     img: string,
     typeId: number,
     brandId: number,
-    brand: IBrand
+    brand: IBrand,
+    deviceChar: ICharDevice
+}
+
+export interface IDeviceAdd {
+    name: string,
+    price: number,
+    img: File,
+    type: IType,
+    brand: IBrand,
+    chars: Object[]
 }
 
 export interface IDevices {
     type: number | null 
     brand: number | null
-    devices: IDevice[]
+    //devices: IDevice[]
     types: IType[]
     brands: IType[]
 }
