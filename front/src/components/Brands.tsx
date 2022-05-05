@@ -30,7 +30,6 @@ const Brands = observer(() => {
     //     get();
     // }, []);
 
-
     const selectBrand = (id: number| null) => {
         device.setBrand(id);
         setBorder(id)
