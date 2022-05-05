@@ -11,7 +11,7 @@ export interface IDevice {
 export interface IDevices {
     type: number | null 
     brand: number | null
-    devices: IDevice[]
+    //devices: IDevice[]
     types: IType[]
     brands: IType[]
 }

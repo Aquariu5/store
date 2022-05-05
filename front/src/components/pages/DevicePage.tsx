@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Container, Image, Row, Col, Card, Button, Badge } from "react-bootstrap";
+import { Container, Image, Row, Col, Button } from 'react-bootstrap'
 import { useParams } from "react-router-dom";
 import { getDeviceById } from "../../api/apiDevices";
 import {addInBasket} from '../../api/apiBasket';
@@ -23,7 +23,7 @@ const DevicePage = observer(() => {
                 setUrl(`${process.env.REACT_APP_BACK_SITE}/${res.img}`)
             })
         }
-    }, []);
+    }, [id]);
     
     const add = useCallback(() => {
         //console.log('id, device', id, device);
@@ -32,7 +32,7 @@ const DevicePage = observer(() => {
             addInBasket(user.id, +id)
             .then(res => {
                 //console.log('resssssss', res);
-                if (res.length == 1 && res[0] == 1) { // update
+                if (res.length === 1 && res[0] === 1) { // update
                     basket.updateAmount(+id, user.id);
                 }
                 else {

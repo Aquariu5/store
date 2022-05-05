@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import { getBasketById } from "../../api/apiBasket";
-import {getDeviceById} from "../../api/apiDevices";
-import { IBasket } from "../../interfaces/basket";
-import user from "../../models/user";
-import basketModel from "../../models/basket";
+import {Container, Row } from "react-bootstrap";
+import user from "../../../models/user";
+import basketModel from "../../../models/basket";
 import { observer } from "mobx-react-lite";
-import BasketItem from "./basket/BasketItem";
+import BasketItem from "./BasketItem";
 const Basket = observer(() => {
 
     return <Container>

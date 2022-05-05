@@ -1,6 +1,5 @@
 import { makeAutoObservable } from "mobx";
 import { IBasket } from "../interfaces/basket";
-import { IDevice } from "../interfaces/device";
 import user from "./user";
 import { IBasketDevice } from "../interfaces/basket";
 

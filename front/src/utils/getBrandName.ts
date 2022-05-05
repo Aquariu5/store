@@ -14,7 +14,7 @@ export default async function getBrandName(id: number) {
             if (brand.id == id) {
                 brandStr = brand.name;
                 throw BreakException;
-            }
+      }
         })
     } catch(e: any) {
         if (e !== BreakException) {

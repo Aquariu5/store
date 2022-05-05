@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
-import { Container, Row, Col, Navbar, Nav, Button, NavLink, Form, FormControl, Badge} from "react-bootstrap";
-import { Link, useNavigate} from "react-router-dom";
+import { Container, Navbar, Nav, Button, Form, FormControl, Badge} from "react-bootstrap";
+import { useNavigate} from "react-router-dom";
 import { AUTH_PATH, BASKET_PATH, HOME_PATH } from "./router/paths";
 import user from "../models/user";
 import basket from "../models/basket";
 import { observer } from "mobx-react-lite";
 import clear from "./init/clearApp";
-import init from "./init/initApp";
 const NavbarOwn = observer(() => {
 
-    const [state,setState] = useState('');
     const history = useNavigate();
     console.log('basketDevicesnav', basket.devices.length);
     const logOut = () => {

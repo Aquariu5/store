@@ -1,15 +1,11 @@
 import Admin from "../pages/Admin";
-import Shop from "../Shop";
+import Shop from "../pages/Shop";
 import Auth from "../pages/Auth";
 import { HOME_PATH, ADMIN_PATH, AUTH_PATH, BASKET_PATH, DEVICE_PATH } from "./paths";
-import Basket from "../pages/Basket";
+import Basket from "../pages/basket/Basket";
 import DevicePage from "../pages/DevicePage";
-import React, { ReactNode, RefCallback } from "react";
 
-interface IRouter {
-    path: string,
-    component: ReactNode | React.Component
-}
+
 export const notAuthRouter = [
     {path: HOME_PATH, element: <Shop/> },
     {path: AUTH_PATH, element: <Auth/>},
