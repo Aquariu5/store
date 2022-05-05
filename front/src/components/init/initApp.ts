@@ -12,7 +12,6 @@ export default async function init() {
         user.role = data.role;
         const basketById = await getBasketById(user.id);
         basket.setDevices(basketById.rows);
-        console.log('basketleninit', basket.devices.length);
     }
 }
 

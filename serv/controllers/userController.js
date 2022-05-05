@@ -7,7 +7,7 @@ const generateJWT = async (id, email, role) => {
     return jsonwebtoken.sign(
         {id, email, role},
         process.env.SECRET_KEY,
-        { expiresIn: '10m'}
+        { expiresIn: '24h'}
     )
 }
 

@@ -1,6 +1,6 @@
 import { Container, Navbar, Nav, Button, Form, FormControl, Badge} from "react-bootstrap";
 import { useNavigate} from "react-router-dom";
-import { AUTH_PATH, BASKET_PATH, HOME_PATH } from "./router/paths";
+import { AUTH_PATH, BASKET_PATH, HOME_PATH, ADMIN_PATH } from "./router/paths";
 import user from "../models/user";
 import basket from "../models/basket";
 import { observer } from "mobx-react-lite";
@@ -8,7 +8,6 @@ import clear from "./init/clearApp";
 const NavbarOwn = observer(() => {
 
     const history = useNavigate();
-    console.log('basketDevicesnav', basket.devices.length);
     const logOut = () => {
         user.setAuthFalse();
         clear();
@@ -33,6 +32,7 @@ const NavbarOwn = observer(() => {
                     />
                     <Button variant="outline-success">Search</Button>
                 </Form>
+                <Button variant="outline-secondary" onClick={() => user.role === 'ADMIN' ? history(ADMIN_PATH) : history(HOME_PATH)}>Одменская панель</Button>
                 <Nav className="ml-auto">
                     {
                         user.auth ?
@@ -47,8 +47,7 @@ const NavbarOwn = observer(() => {
                     <Link to={BASKET_PATH}>Корзина</Link> */}
                 </Nav>
             </Container>
-        </Navbar>
-            
+        </Navbar>      
     )
 
 });

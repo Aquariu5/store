@@ -6,6 +6,8 @@ import {IDevices, IDevice, IType} from '../interfaces/device';
 class Devices implements IDevices {
     type: number | null;
     brand: number | null;
+    page: number;
+    limit: number;
     //devices: IDevice[];
     types: IType[];
     brands: IType[];
@@ -14,16 +16,18 @@ class Devices implements IDevices {
         this.type = null;
         this.brand = null;
         //this.devices = [];
+        this.page = 1;
+        this.limit = 4;
         this.types = [];
         this.brands = [];
         makeAutoObservable(this);
     }
 
-    setType(val: number) {
+    setType(val: number| null) {
         this.type = val;
     }
 
-    setBrand(val: number) {
+    setBrand(val: number| null) {
         this.brand = val;
     }
 
@@ -37,6 +41,10 @@ class Devices implements IDevices {
 
     setTypes(val: IType[]) {
         this.types =  val;
+    }
+
+    setPage(val: number) {
+        this.page = val;
     }
 }
 

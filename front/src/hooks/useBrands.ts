@@ -7,7 +7,7 @@ export default function useBrands() {
     const {data, error} = useSWR(endpoint, getFetcher);
     return {
         brands: data,
-        error,
-        loading: !data && !error
+        errorBrands: error,
+        loadingBrands: !data && !error
     }
 }

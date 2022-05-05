@@ -34,6 +34,11 @@ export const brand = sequelize.define('brand', {
     name: {type: DataTypes.STRING}
 })
 
+export const deviceChars = sequelize.define('device_chars', {
+    id: {type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true},
+    description: {type: DataTypes.STRING, allowNull: false}
+})
+
 user.hasOne(basket)
 basket.belongsTo(user)
 
@@ -50,3 +55,5 @@ device.belongsTo(type)
 brand.hasMany(device)
 device.belongsTo(brand)
 
+device.hasOne(deviceChars)
+deviceChars.belongsTo(device);

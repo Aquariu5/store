@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 
-const useInput = (initValue: string) => {
-    const [value, setValue] = useState<string>(initValue);
+export default function useInput<T>(initValue: T) {
+    const [value, setValue] = useState<T | string>(initValue);
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
+        let val = (e.target.value).toString()
+        setValue(val);
     }
 
     return {
@@ -11,5 +12,3 @@ const useInput = (initValue: string) => {
         onChange
     }
 }
-
-export default useInput

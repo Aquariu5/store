@@ -61,9 +61,7 @@ const Auth = observer(() => {
     },[signIn]);
 
     return (
-        <Container className="d-flex justify-content-center align-items-center"  style={{
-            height: window.innerHeight - 100
-            }}>
+        <Container className="d-flex justify-content-center align-items-center AutoHeight">
                 <Card style={{width: 600}} className={'p-5'}>
                     <h3 className={'m-auto p-4'}>{header[0]} </h3>
                     <Form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column">

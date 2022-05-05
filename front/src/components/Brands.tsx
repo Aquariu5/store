@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import { Button, Container, Col, Row, Card, Spinner } from "react-bootstrap";
-import { getBrands } from "../api/apiDevices";
+import { getBrands } from "../api/apiBrands";
 import useBrands from "../hooks/useBrands";
 
 //import useSWR from "swr";
@@ -14,10 +14,10 @@ import device from '../models/devices';
 
 const Brands = observer(() => {
     
-    const [border, setBorder] = useState(0);
+    const [border, setBorder] = useState<number | null>(0);
 
     
-    const {brands, error, loading} = useBrands();
+    const {brands, errorBrands, loadingBrands} = useBrands();
     // useEffect(() => {
     //     console.log('databrands', data);
     // },[data]);
@@ -31,7 +31,7 @@ const Brands = observer(() => {
     // }, []);
 
 
-    const selectBrand = (id: number) => {
+    const selectBrand = (id: number| null) => {
         device.setBrand(id);
         setBorder(id)
     }
@@ -40,8 +40,19 @@ const Brands = observer(() => {
             <Col className="mt-3" style={{marginLeft: '20px'}}>
                 <h3 className="d-flex">Популярные бренды</h3>
                 <Col md={10}>
+                    <Card
+                        className="p-2 " 
+                        style={{
+                            cursor: 'pointer',
+                            border: device.brand === null ?  '2px solid black' : '',
+                            backgroundColor: '#FEF'
+                        }}
+                        onClick={() => selectBrand(null)}
+                        
+                    >{'Все'}
+                    </Card>
                     {
-                        loading 
+                        loadingBrands
                         ? 
                             <Spinner animation="border"/>
                         : 

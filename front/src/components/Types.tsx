@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import {Col, Card, Spinner } from "react-bootstrap";
-import { getTypes } from "../api/apiDevices";
+import { getTypes} from "../api/apiTypes";
 import useTypes from "../hooks/useTypes";
 import { IType } from "../interfaces/device";
 import device from '../models/devices';
@@ -17,7 +17,7 @@ const Types = observer(() => {
         device.setType(id);
     }
 
-    const {types, error, loading} = useTypes();
+    const {types, errorTypes, loadingTypes} = useTypes();
     console.log('type', device.type);
     // useEffect(() => {
     //     const get = async () => {
@@ -29,13 +29,24 @@ const Types = observer(() => {
     // }, [])
     return (
                 <Col md={6} className="d-flex">
+                    <Card 
+                    className="p-2"
+                    style={{
+                        width: '150px',
+                        cursor: 'pointer',
+                        border: 0 === selected ? '2px solid black' : '',
+                        backgroundColor: '#FEF'
+                    }}
+                    onClick={() => selectType(0)}
+                    
+                    >{'Все'}</Card>
                 {
-                    loading ? <Spinner animation="border"/>
+                    loadingTypes ? <Spinner animation="border"/>
                 :
                 types.map((el: IType) => <Card 
                     className="p-2"
                     key={el.id}
-                    style={{width: '150px', cursor: 'pointer', border: el.id === selected ? '2px solid black' : ''}}
+                    style={{width: '200px', cursor: 'pointer', border: el.id === selected ? '2px solid black' : ''}}
                     onClick={() => selectType(el.id)}
                     >{el.name}</Card>)
                     }
